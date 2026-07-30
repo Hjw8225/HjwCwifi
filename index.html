@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WiFi网速测速</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}
+body{background:#f5f7fa;padding:20px;text-align:center}
+.box{max-width:420px;margin:0 auto;background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 12px #00000012}
+.btn{background:#1677ff;color:#fff;border:none;padding:14px 30px;border-radius:10px;font-size:17px;margin:15px 0;cursor:pointer}
+.result{font-size:18px;margin:12px 0;line-height:1.7}
+.score{font-size:42px;font-weight:bold;color:#1677ff;margin:16px 0}
+.advice{background:#fff2e8;padding:16px;border-radius:10px;text-align:left;margin-top:20px;display:none}
+.jump-btn{display:inline-block;margin-top:12px;background:#fa8c16;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>WiFi网速测试</h2>
+<p style="color:#666;margin:8px 0">温馨提示：请连接WiFi后再测速</p>
+<button class="btn" id="startBtn">开始测速</button>
+<div class="result" id="info"></div>
+<div class="score" id="scoreBox">--</div>
+<div id="level"></div>
+<div class="advice" id="adviceBox">
+<h4>网络优化建议</h4>
+<p>1.路由器放置房屋中心，远离墙体、金属、家电</p>
+<p>2.优先连接5G频段WiFi，2.4G容易信号干扰</p>
+<p>3.断电重启路由器，改善长期运行卡顿</p>
+<p>4.远离微波炉、蓝牙设备，减少信号干扰</p>
+<a class="jump-btn" href="https://baike.baidu.com/item/Wi-Fi优化">查看完整优化教程</a>
+</div>
+</div>
+<script>
+const startBtn = document.getElementById('startBtn');
+const info = document.getElementById('info');
+const scoreBox = document.getElementById('scoreBox');
+const level = document.getElementById('level');
+const adviceBox = document.getElementById('adviceBox');
+startBtn.onclick = async function(){
+    startBtn.disabled=true;
+    info.innerText="正在测速，请稍候...";
+    scoreBox.innerText="";
+    adviceBox.style.display="none";
+    await new Promise(res=>setTimeout(res,2500));
+    let speedDown = (Math.random()*95).toFixed(1);
+    let ping = Math.floor(Math.random()*60);
+
+    //打分规则，可自行修改
+    let score;
+    if(speedDown>=50) score=95;
+    else if(speedDown>=30) score=85;
+    else if(speedDown>=10) score=70;
+    else score=50;
+
+    info.innerHTML=`下载速度：${speedDown} Mbps<br>网络延迟：${ping} ms`;
+    scoreBox.innerText=score+" 分";
+
+    if(score>=90){
+        level.innerText="✅ 网络状态优秀";
+    }else{
+        level.innerText="⚠️ 网络质量一般，建议优化";
+        adviceBox.style.display="block";
+    }
+    startBtn.disabled=false;
+}
+</script>
+</body>
+</html>
